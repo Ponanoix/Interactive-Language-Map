@@ -1,0 +1,46 @@
+.branch-button {
+    width: 33px;
+    height: 31px;
+    position: absolute;
+    top: 164px;
+    right: 8px;
+    background-color: #ffffff;
+    border-style: solid;
+    border-color: #e2e3e4;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../images/branches.png');
+    background-size: 25px 25px;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.branch-button:after {
+    content: 'Show branches';
+    position: relative;
+    top: 0;
+    left: -115px;
+    bottom: 100%;
+    transform: translateX(20%);
+    background-color: white;
+    color: black;
+    padding: 5px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    visibility: hidden;
+}
+
+.branch-button:hover::after {
+    display: block;
+    visibility: visible;
+}
+
+.branch-button:hover {
+    background-color: #f2f2f2;
+}
