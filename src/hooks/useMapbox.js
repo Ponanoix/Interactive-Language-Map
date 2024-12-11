@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
-import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import { checkWebGLSupport, handleMapError } from '../utils/mapboxUtils';
+import { AddExportButton } from '../components/buttons/ExportMapButton';
+import { TextEncoder, TextDecoder } from 'util';
+import mapboxgl from 'mapbox-gl';
+
+Object.assign(global, { TextDecoder, TextEncoder });
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicG9uYW5vaXgiLCJhIjoiY20yb3kwemVkMGt3MTJrczlwbjBmYmJ4ZiJ9.F7UndLXDlTla3G6cgbRhRA';
 
@@ -33,11 +37,14 @@ export const useMapbox = (mapContainerId,
                 style: mapConfig.style,
                 center: mapConfig.center,
                 zoom: mapConfig.zoom,
+                preserveDrawingBuffer: true,
             });
 
             map.on('style.load', () => {
 
                 map.addControl(new mapboxgl.NavigationControl(), 'top-right');
+
+                AddExportButton(map);
 
                 const toggleLanguageLayerVisibility = () => {
                     for (let i = 0; i < languageLayers.length; i++) {

@@ -1,0 +1,19 @@
+.export-map-button {
+    position: absolute;
+    top: 10px;
+    right: 45px;
+    z-index: 999;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.export-map-button:hover {
+    background-color: #0056b3;
+}
