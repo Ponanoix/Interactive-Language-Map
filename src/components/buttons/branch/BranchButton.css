@@ -1,8 +1,8 @@
-.language-button {
+.branch-button {
     width: 33px;
     height: 31px;
     position: absolute;
-    top: 100px;
+    top: 164px;
     right: 8px;
     background-color: #ffffff;
     border-style: solid;
@@ -13,17 +13,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../images/languages.png');
+    background-image: url('../../images/branches.png');
     background-size: 25px 25px;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.language-button:after {
-    content: 'Show languages';
+.branch-button:after {
+    content: 'Show branches';
     position: relative;
     top: 0;
-    left: -120px;
+    left: -115px;
     bottom: 100%;
     transform: translateX(20%);
     background-color: white;
@@ -36,11 +36,11 @@
     visibility: hidden;
 }
 
-.language-button:hover::after {
+.branch-button:hover::after {
     display: block;
     visibility: visible;
 }
 
-.language-button:hover {
+.branch-button:hover {
     background-color: #f2f2f2;
 }

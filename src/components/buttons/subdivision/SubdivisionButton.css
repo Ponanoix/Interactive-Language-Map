@@ -1,8 +1,8 @@
-.branch-button {
+.subdivision-button {
     width: 33px;
     height: 31px;
     position: absolute;
-    top: 164px;
+    top: 196px;
     right: 8px;
     background-color: #ffffff;
     border-style: solid;
@@ -13,17 +13,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../images/branches.png');
+    background-image: url('../../images/subdivisions.png');
     background-size: 25px 25px;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.branch-button:after {
-    content: 'Show branches';
+.subdivision-button:after {
+    content: 'Show major subdivisions';
     position: relative;
     top: 0;
-    left: -115px;
+    left: -155px;
     bottom: 100%;
     transform: translateX(20%);
     background-color: white;
@@ -36,11 +36,11 @@
     visibility: hidden;
 }
 
-.branch-button:hover::after {
+.subdivision-button:hover::after {
     display: block;
     visibility: visible;
 }
 
-.branch-button:hover {
+.subdivision-button:hover {
     background-color: #f2f2f2;
 }

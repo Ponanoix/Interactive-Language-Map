@@ -1,9 +1,9 @@
-.export-map-button {
+.language-button {
     width: 33px;
     height: 31px;
     position: absolute;
-    top: 10px;
-    right: 42px;
+    top: 100px;
+    right: 8px;
     background-color: #ffffff;
     border-style: solid;
     border-color: #e2e3e4;
@@ -13,17 +13,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../images/export.png');
+    background-image: url('../../images/languages.png');
     background-size: 25px 25px;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.export-map-button:after {
-    content: 'Download image of the map';
+.language-button:after {
+    content: 'Show languages';
     position: relative;
-    top: 30px;
-    left: -134px;
+    top: 0;
+    left: -120px;
     bottom: 100%;
     transform: translateX(20%);
     background-color: white;
@@ -36,11 +36,11 @@
     visibility: hidden;
 }
 
-.export-map-button:hover::after {
+.language-button:hover::after {
     display: block;
     visibility: visible;
 }
 
-.export-map-button:hover {
+.language-button:hover {
     background-color: #f2f2f2;
 }

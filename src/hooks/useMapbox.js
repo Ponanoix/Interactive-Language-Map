@@ -1,11 +1,8 @@
 import { useEffect, useState } from 'react';
 import 'mapbox-gl/dist/mapbox-gl.css';
+import mapboxgl from 'mapbox-gl';
 import { checkWebGLSupport, handleMapError } from '../utils/mapboxUtils';
 import { AddExportButton } from '../components/buttons/ExportMapButton';
-import { TextEncoder, TextDecoder } from 'util';
-import mapboxgl from 'mapbox-gl';
-
-Object.assign(global, { TextDecoder, TextEncoder });
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicG9uYW5vaXgiLCJhIjoiY20yb3kwemVkMGt3MTJrczlwbjBmYmJ4ZiJ9.F7UndLXDlTla3G6cgbRhRA';
 
@@ -16,7 +13,11 @@ export const useMapbox = (mapContainerId,
                           groupLayers,
                           groupLayersVisible,
                           branchLayers,
-                          branchLayersVisible) => {
+                          branchLayersVisible,
+                          subdivisionLayers,
+                          subdivisionLayersVisible,
+                          familyLayers,
+                          familyLayersVisible) => {
     const [isWebGLSupported, setWebGLSupported] = useState(true);
 
     useEffect(() => {
@@ -45,6 +46,8 @@ export const useMapbox = (mapContainerId,
                 map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
                 AddExportButton(map);
+
+                console.log('Family layer visibility:', familyLayersVisible);
 
                 const toggleLanguageLayerVisibility = () => {
                     for (let i = 0; i < languageLayers.length; i++) {
@@ -76,15 +79,39 @@ export const useMapbox = (mapContainerId,
                     }
                 };
 
+                const toggleSubdivisionLayerVisibility = () => {
+                    for (let i = 0; i < subdivisionLayers.length; i++) {
+                        if (subdivisionLayersVisible) {
+                            map.setLayoutProperty(subdivisionLayers[i], 'visibility', 'visible');
+                        } else {
+                            map.setLayoutProperty(subdivisionLayers[i], 'visibility', 'none');
+                        }
+                    }
+                };
+
+                const toggleFamilyLayerVisibility = () => {
+                    for (let i = 0; i < familyLayers.length; i++) {
+                        if (familyLayersVisible) {
+                            map.setLayoutProperty(familyLayers[i], 'visibility', 'visible');
+                        } else {
+                            map.setLayoutProperty(familyLayers[i], 'visibility', 'none');
+                        }
+                    }
+                };
+
                 toggleLanguageLayerVisibility();
                 toggleGroupLayerVisibility();
                 toggleBranchLayerVisibility();
+                toggleSubdivisionLayerVisibility();
+                toggleFamilyLayerVisibility();
 
                 map.on('data', () => {
                     if (map.isStyleLoaded()) {
                         toggleLanguageLayerVisibility();
                         toggleGroupLayerVisibility();
                         toggleBranchLayerVisibility();
+                        toggleSubdivisionLayerVisibility();
+                        toggleFamilyLayerVisibility();
                     }
                 });
 
@@ -253,6 +280,10 @@ export const useMapbox = (mapContainerId,
                 map.on('mouseleave', groupLayers, () => map.getCanvas().style.cursor = '');
                 map.on('mouseenter', branchLayers, () => map.getCanvas().style.cursor = 'pointer');
                 map.on('mouseleave', branchLayers, () => map.getCanvas().style.cursor = '');
+                map.on('mouseenter', subdivisionLayers, () => map.getCanvas().style.cursor = 'pointer');
+                map.on('mouseleave', subdivisionLayers, () => map.getCanvas().style.cursor = '');
+                map.on('mouseenter', familyLayers, () => map.getCanvas().style.cursor = 'pointer');
+                map.on('mouseleave', familyLayers, () => map.getCanvas().style.cursor = '');
             });
 
             return () => map.remove();
@@ -260,7 +291,19 @@ export const useMapbox = (mapContainerId,
             handleMapError(error);
             setWebGLSupported(false);
         }
-    }, [mapContainerId, mapConfig, languageLayers, languagesLayerVisible, groupLayers, groupLayersVisible, branchLayers, branchLayersVisible]);
+    }, [mapContainerId,
+            mapConfig,
+            languageLayers,
+            languagesLayerVisible,
+            groupLayers,
+            groupLayersVisible,
+            branchLayers,
+            branchLayersVisible,
+            subdivisionLayers,
+            subdivisionLayersVisible,
+            familyLayers,
+            familyLayersVisible,]
+    );
 
     return { isWebGLSupported };
 };

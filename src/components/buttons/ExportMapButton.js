@@ -5,7 +5,6 @@ export const AddExportButton = (map) => {
 
     const button = document.createElement('button');
     button.id = buttonId;
-    button.innerText = 'Export Map as Image';
     button.classList.add('export-map-button');
 
     document.body.appendChild(button);

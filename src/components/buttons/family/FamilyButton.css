@@ -1,8 +1,8 @@
-.group-button {
+.family-button {
     width: 33px;
     height: 31px;
     position: absolute;
-    top: 132px;
+    top: 228px;
     right: 8px;
     background-color: #ffffff;
     border-style: solid;
@@ -13,17 +13,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('../images/groups.png');
+    background-image: url('../../images/families.png');
     background-size: 25px 25px;
     background-repeat: no-repeat;
     background-position: center;
 }
 
-.group-button:after {
-    content: 'Show groups';
+.family-button:after {
+    content: 'Show families';
     position: relative;
     top: 0;
-    left: -105px;
+    left: -120px;
     bottom: 100%;
     transform: translateX(20%);
     background-color: white;
@@ -36,11 +36,11 @@
     visibility: hidden;
 }
 
-.group-button:hover::after {
+.family-button:hover::after {
     display: block;
     visibility: visible;
 }
 
-.group-button:hover {
+.family-button:hover {
     background-color: #f2f2f2;
 }
