@@ -89,7 +89,7 @@ const LanguageMap = () => {
             setSubdivisionLayerVisible(false);
         }
     }
-
+    
     if (!isWebGLSupported) {
         return <div>Your browser does not support WebGL, and the map cannot be displayed.</div>;
     }

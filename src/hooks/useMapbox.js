@@ -3,6 +3,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import mapboxgl from 'mapbox-gl';
 import { checkWebGLSupport, handleMapError } from '../utils/mapboxUtils';
 import { AddExportButton } from '../components/buttons/ExportMapButton';
+import '@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css';
+import mapboxglGeocoder from '@mapbox/mapbox-gl-geocoder';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoicG9uYW5vaXgiLCJhIjoiY20yb3kwemVkMGt3MTJrczlwbjBmYmJ4ZiJ9.F7UndLXDlTla3G6cgbRhRA';
 
@@ -47,7 +49,13 @@ export const useMapbox = (mapContainerId,
 
                 AddExportButton(map);
 
-                console.log('Family layer visibility:', familyLayersVisible);
+                const geocoder = new mapboxglGeocoder({
+                    accessToken: mapboxgl.accessToken,
+                    mapboxgl: mapboxgl,
+                    placeholder: 'Search for a location or layer'
+                });
+
+                map.addControl(geocoder, 'top-left');
 
                 const toggleLanguageLayerVisibility = () => {
                     for (let i = 0; i < languageLayers.length; i++) {
@@ -261,6 +269,120 @@ export const useMapbox = (mapContainerId,
                                     </div>
                                     <div class="branches-container-groups">
                                         <p1><strong>Groups:</strong> ${groupsString}</p1>
+                                    </div>
+                                </div>`;
+                        });
+
+                        popupContent += '</div>';
+
+                        new mapboxgl.Popup()
+                            .setLngLat(e.lngLat)
+                            .setHTML(popupContent)
+                            .addTo(map);
+                    }
+
+                    const subdivisionFeatures = map.queryRenderedFeatures(e.point, { layers: subdivisionLayers });
+                    if (subdivisionFeatures.length) {
+                        let popupContent = '<div style="display: flex; flex-direction: column;">';
+
+                        subdivisionFeatures.forEach((feature) => {
+                            if (!feature || !feature.properties) return;
+                            const { centum_satem, family, branches } = feature.properties;
+
+                            let branchesArray = [];
+                            try {
+                                if (typeof branches === 'string') {
+                                    branchesArray = JSON.parse(branches);
+                                } else if (Array.isArray(branches)) {
+                                    branchesArray = branches;
+                                }
+                            } catch (e) {
+                                console.error('Error parsing branches:', e);
+                            }
+                            const branchesString = branchesArray.join(', ');
+
+                            let imageSrc = "/images/icons/favicon.ico";
+                            if (centum_satem === "Centum") {
+                                imageSrc = "/images/subdivisions/centum.png";
+                            } else if (centum_satem === "Satem") {
+                                imageSrc = "/images/subdivisions/satem.png";
+                            }
+
+                            popupContent +=
+                                `<div class="popup-item-subdivisions">
+                                    <div class="image-container">
+                                        <img 
+                                            src="${imageSrc}" 
+                                            alt="Subdivision Image"
+                                        />
+                                    </div>
+                                    <div class="text-container-subdivisions">
+                                        <h1>${centum_satem}</h1>
+                                        <p><strong>Family:</strong> ${family}</p>
+                                    </div>
+                                    <div class="image-container">
+                                        <img 
+                                            src="${imageSrc}" 
+                                            alt="Subdivision Image"
+                                        />
+                                    </div>
+                                    <div class="subdivisions-container-branches">
+                                        <p1><strong>Groups:</strong> ${branchesString}</p1>
+                                    </div>
+                                </div>`;
+                        });
+
+                        popupContent += '</div>';
+
+                        new mapboxgl.Popup()
+                            .setLngLat(e.lngLat)
+                            .setHTML(popupContent)
+                            .addTo(map);
+                    }
+
+                    const familyFeatures = map.queryRenderedFeatures(e.point, { layers: familyLayers });
+                    if (familyFeatures.length) {
+                        let popupContent = '<div style="display: flex; flex-direction: column;">';
+
+                        familyFeatures.forEach((feature) => {
+                            if (!feature || !feature.properties) return;
+                            const { family, subdivisions } = feature.properties;
+                            let subdivisionsArray = [];
+                            try {
+                                if (typeof subdivisions === 'string') {
+                                    subdivisionsArray = JSON.parse(subdivisions);
+                                } else if (Array.isArray(subdivisions)) {
+                                    subdivisionsArray = subdivisions;
+                                }
+                            } catch (e) {
+                                console.error('Error parsing subdivisions:', e);
+                            }
+                            const subdivisionsString = subdivisionsArray.join(', ');
+
+                            let imageSrc = "/images/icons/favicon.ico";
+                            if (family === "Indo-European") {
+                                imageSrc = "/images/families/indoeuropean.png";
+                            }
+
+                            popupContent +=
+                                `<div class="popup-item-families">
+                                    <div class="image-container">
+                                        <img 
+                                            src="${imageSrc}" 
+                                            alt="Family Image"
+                                        />
+                                    </div>
+                                    <div class="text-container-families">
+                                        <h1>${family}</h1>
+                                    </div>
+                                    <div class="image-container">
+                                        <img 
+                                            src="${imageSrc}" 
+                                            alt="Family Image"
+                                        />
+                                    </div>
+                                    <div class="families-container-subdivisions">
+                                        <p1><strong>Subdivisions:</strong> ${subdivisionsString}</p1>
                                     </div>
                                 </div>`;
                         });
